@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - backend
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+
+  weaviate:
+    image: semitechnologies/weaviate:latest
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+    environment:
+      - QUERY_DEFAULTS_LIMIT=25
+      - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
+      - PERSISTENCE_DATA_PATH=/var/lib/weaviate
+      - DEFAULT_VECTORIZER_MODULE=none
+      - ENABLE_MODULES=none
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - ollama
+      - weaviate
+    networks:
+      - backend
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - WEAVIATE_HOST=http://weaviate:8080
+    restart: on-failure
+
+volumes:
+  ollama_data:
+
+networks:
+  backend:

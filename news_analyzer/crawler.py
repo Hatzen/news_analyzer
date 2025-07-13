@@ -6,7 +6,7 @@ from news_analyzer.config import NEWS_SOURCES
 def get_yesterday_date_str():
     return (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
-def extract_articles():
+def extract_articles() -> []:
     articles = []
     for source in NEWS_SOURCES:
         for url in source["overview_urls"]:

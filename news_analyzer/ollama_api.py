@@ -28,6 +28,7 @@ Rückgabeformat:
 }
 """
 
+# TODO: Or analyze directly https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
 def analyze_article(title, content, category, date):
     prompt = ANALYSIS_PROMPT.format(title=title, content=content, category=category, date=date)
     response = requests.post(OLLAMA_API_URL, json={"model": "llama3", "prompt": prompt})
