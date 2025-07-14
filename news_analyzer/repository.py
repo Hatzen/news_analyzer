@@ -1,7 +1,7 @@
 
 import datetime
 import weaviate
-from config import weaviate_url
+from news_analyzer.config import weaviate_url
 
 def saveAll(result):
     
